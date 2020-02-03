@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (gameState)
             {
@@ -87,6 +87,16 @@ public class GameManager : MonoBehaviour
             {
                 gameState = GameState.WaitingRound;
                 CheckRounds();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                CheckRounds(1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                CheckRounds(2);
             }
             
             CheckCombinations();
@@ -127,7 +137,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var house in houses)
         {
-            house.GetComponent<SpriteRenderer>().color = Color.black;
+            house.GetComponent<SpriteRenderer>().color = Color.white;
         }
         
         if (winPlayer == 1)
@@ -192,10 +202,10 @@ public class GameManager : MonoBehaviour
                 playerWonText.text = "It's a tie! :(";
                 break;
             case 1:
-                playerWonText.text = "Player 1 Won!";
+                playerWonText.text = "Tesla Won!";
                 break;
             case 2:
-                playerWonText.text = "Player 2 Won!";
+                playerWonText.text = "Edison Won!";
                 break;
         }
     }
@@ -217,10 +227,10 @@ public class GameManager : MonoBehaviour
                 roundMessage.text = "It's a tie! :(";
                 break;
             case 1:
-                roundMessage.text = "Player 1 won the round!";
+                roundMessage.text = "Tesla won the round!";
                 break;
             case 2:
-                roundMessage.text = "Player 2 won the round!";
+                roundMessage.text = "Edison won the round!";
                 break;
         }
     }
@@ -238,13 +248,16 @@ public class GameManager : MonoBehaviour
     {
         var selectedRound = rounds[currentRound];
         currentCombination = selectedRound.combinations[UnityEngine.Random.Range(0, selectedRound.combinations.Count)];
-        var combiText = "Connect houses: ";
+        var combiText = "Connect houses:";
         foreach (var house in currentCombination.houses)
         {
-            combiText += " " + house + 1;
+            var houseNumber = house + 1;
+            combiText += " " + houseNumber.ToString() + ", ";
             houses[house].GetComponent<SpriteRenderer>().color = Color.yellow;
         }
 
+        combiText.Remove(combiText.Length - 2, 1);
+        
         combinationText.text = combiText;
     }
 }
